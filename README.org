@@ -1,0 +1,166 @@
+#+TITLE: IntroSDE Final Project
+#+AUTHOR: Daniele Santoro
+#+DATE: 10/02/2016
+* General description
+  The application permits a person to add his personal information together with health information like weight, height and age (calculated from date of birth/birthdate). Moreover the person can add an indefinite number of meals and one goal per day, both with respective attributes.
+  The system should store for each meal the datetime, the amount of calories and the type of meal. The goal of the day is defined with the day and the amount of calories.
+  The person can also insert in the system the sport activities performed in a day with its amount of calories burned.
+  Either the system automatically or the person manually should insert in the person profile the amount of calories burned during a regular day, this depends on weight, height and job type.
+  Based on the sum of calories taken with meals, burned during sport activities and burned during regular day activities, the system should be able to compute if the person has reached the goal of the day or not.
+  Optionally the system can calculate the amount of calories a person can assume during a regular day based on the weight and height and activities planned.
+  
+** TODO The system should use an external API to retrieve information.
+   - Motivational phrases
+   - List of meals
+
+* Model draft
+** Objects
+*** Entities
+**** Person
+***** name
+***** surname
+***** birthday
+***** email
+***** weight
+***** height
+***** daycalories
+**** Meal
+***** datetime
+***** name
+***** calories
+***** type
+****** snack
+****** breakfast
+****** lunch
+****** dinner
+**** Activity
+***** day
+***** calories
+**** Goal
+***** name
+***** day
+***** calories
+** Methods
+** Services
+
+* Names
+  - person
+    - name
+    - surname
+    - birth date
+    - email
+    - age (calculated)
+    - calories burned regular day
+    - weight
+    - height
+  - meal
+    - day-time
+    - meal name
+    - meal calories
+    - type
+      - snack
+      - breakfast
+      - lunch
+      - dinner
+  - goal
+    - goal day 
+    - goal name
+    - goal calories
+  - activities
+    - day
+    - burned calories
+
+* Verbs
+  - on Person
+    - readPerson +
+    - insertPerson
+    - updatePerson
+    - deletePerson
+  - on Meal
+    - readMeal +
+    - insertMeal +
+    - updateMeal
+    - deleteMeal
+  - on Goal
+    - readGoal +
+    - insertGoal +
+    - updateGoal
+    - deleteGoal
+  - on Activity
+    - readActivity +
+    - insertActivity +
+    - updateActivity
+    - deleteActivity
+  - checkGoal
+  - alarm goal not respected
+  - listMeals (from external source)
+  - getMOtivationalPhrases (from external source)
+* Questions
+  1) How can I have my data model structure shared between services ? Can I just share the model package or do I have to manually/programmatically marshall and unmarshall objects between services mapping each fields ?
+  2) Architecture validation
+  3) Is the first "storage services" layer just a gateway to redirect the message on the underling data-sources ? It is similar to the process centric services in my opinion, right ?
+  4) Should we use BPEL language for composition and orchestration ?
+  5) Doubts on idem-potency in REST if another actor change the resource during my repetitive calls.
+  6) Issue with OneToMany on Parent -> Child and JAXB binding
+     Think to have a Parent class connected with a Child class with a OneToMany relation. We have child object attribute in Parent and parent object attribute in Child.
+
+     Now, in child we must mark =getParent()= method with @XmlTransient otherwise we have a cycle when marshall and unmarshall Parent.
+
+     This create issues when saving a Parent containing children through SOAP because the Parent reference inside the Child is not unmarshalled and murshalled properly.
+     
+     - http://stackoverflow.com/questions/3073364/jaxb-mapping-cyclic-references-to-xml
+     - http://stackoverflow.com/questions/17295370/a-cycle-is-detected-in-the-object-graph-this-will-cause-infinitely-deep-xml
+     - http://stackoverflow.com/questions/17576823/this-will-cause-infinitely-deep-xml
+     - http://blog.bdoughan.com/2010/07/jpa-entities-to-xml-bidirectional.html
+     - http://stackoverflow.com/questions/13957068/using-moxy-to-avoid-cycle-xmlinversereference-xmlid
+
+* Services Description
+** DB Service
+   - Name : dbws
+   - Default Port : 6902
+   - Heroku app URL: murmuring-spire-46621.herokuapp.com
+** Storage Service
+   - Name: storagews
+   - Default Port : 6903
+   - Heroku app URL: damp-fortress-22612.herokuapp.com
+** Adapter Service
+   - Name: adpws
+   - Default Port: 6904
+   - Heroku app URL: pure-scrubland-58213.herokuapp.com
+** Process centric Service
+   - Name: pcsw
+   - Default Port: 6905
+   - Heroku app URL: secret-shelf-40531.herokuapp.com
+* Client operations
+  1) Menu inserimento persona
+     1) Inserisco persona
+  2) Menu operazioni su persona
+     1) Inserisco meal libero
+        1) invoca checkTodayGoal su blws
+	2) propongo cibi con giuste calorie in base all'orario
+     2) Cerco nella lista meal
+        1) Inserisco meal trovato
+	   1) invoca checkTodayGoal su blws
+	   2) recupera frase motivazionale
+        2) Non inserisco meal trovato
+     3) Inserisco attività
+        1) invoca checkTodayGoal su blws
+	2) recupera frase motivazionale
+     4) Vedo miei meals
+     5) Vedo mie activities
+     6) Vedo miei goals
+     7) Vedo stato calorie odierne
+        1) mostra report attività odierne
+	2) invoca checkTodayGoal su blws
+	3) mostra risultato
+     8) Vedo report totale persona
+	1) invoca personReport su blws
+  3) Menu amministrativo
+     1) Vista tutte persone
+     2) Vista tutti meals inseriti
+     3) Vista tutti goal inseriti
+     4) Vista tutte activity inserite
+     5) Ricerca meals
+     6) Cambio persona
+  4) Interfaccia web via ajax con polling su pcws o blws
+	
