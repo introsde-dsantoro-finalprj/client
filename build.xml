@@ -119,8 +119,8 @@
         </target>
 -->
         <target name="execute.client">
-            <echo message="ant execute.client introsde.dsantoro.client.Client in ${build.dir}" />
-            <java classname="introsde.dsantoro.client.client" classpath="${build.dir}" fork="true">
+            <echo message="ant execute.client introsde.dsantoro.client.ClientStarter in ${build.dir}" />
+            <java classname="introsde.dsantoro.client.ClientStarter" classpath="${build.dir}" fork="true">
                 <arg value="$JAVA_OPTS  -cp" />
                 <classpath>
                     <path location="build" />
@@ -153,6 +153,7 @@
             </junit>
         </target>
         <!-- make sure you have created first the WebContent folder, including a META-INF folder, WEB-INF/web.xml file and WEB-INF/lib folder -->
+<!--
         <target name="create.war" depends="install">
             <war destfile="dbws.war" webxml="${web.dir}/WebContent/WEB-INF/web.xml">
                 <fileset dir="${web.dir}/WebContent">
@@ -161,4 +162,5 @@
                 <classes dir="${build.dir}" />
             </war>
         </target>
+-->
     </project>
