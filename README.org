@@ -146,14 +146,15 @@
      3) Inserisco attività
         1) invoca checkTodayGoal su blws
 	2) recupera frase motivazionale
-     4) Vedo miei meals
-     5) Vedo mie activities
-     6) Vedo miei goals
-     7) Vedo stato calorie odierne
+     4) Inserisco goal
+     5) Vedo miei meals
+     6) Vedo mie activities
+     7) Vedo miei goals
+     8) Vedo stato calorie odierne
         1) mostra report attività odierne
 	2) invoca checkTodayGoal su blws
 	3) mostra risultato
-     8) Vedo report totale persona
+     9) Vedo report totale persona
 	1) invoca personReport su blws
   3) Menu amministrativo
      1) Vista tutte persone
