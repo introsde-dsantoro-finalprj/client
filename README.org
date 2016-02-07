@@ -1,6 +1,24 @@
 #+TITLE: IntroSDE Final Project
 #+AUTHOR: Daniele Santoro
 #+DATE: 10/02/2016
+* Client deploy and test
+  1) Clone the repository
+  2) Move into =client= folder
+  3) Deploy with:
+     #+BEGIN_EXAMPLE
+     ant install
+     #+END_EXAMPLE
+  4) Set configuration ENV VARS:
+     #+BEGIN_EXAMPLE
+     #!/bin/bash
+     export PCWS_ENDPOINT=secret-shelf-40531.herokuapp.com
+     export PCWS_PORT=80
+     #+END_EXAMPLE
+  5) Start the client application
+     #+BEGIN_EXAMPLE
+     ant execute.client
+     #+END_EXAMPLE
+     
 * General description
   The application permits a person to add his personal information together with health information like weight, height and age (calculated from date of birth/birthdate). Moreover the person can add an indefinite number of meals and one goal per day, both with respective attributes.
   The system should store for each meal the datetime, the amount of calories and the type of meal. The goal of the day is defined with the day and the amount of calories.
