@@ -100,8 +100,7 @@ public class Client {
 				if (ch != '\n' && ch != '\r') {                    
 					switch((char)ch){
 					case 's':
-					case 'S':
-						System.out.println("NYI");
+					case 'S':						
 						searchMeals();
 						break;
 					case 'i':
@@ -195,6 +194,14 @@ public class Client {
 					case 'A':
 						viewActivities();
 						break;
+					case 'd':
+					case 'D':
+						viewPerson();
+						break;
+					case 't':
+					case 'T':
+						viewTodayStatus();
+						break;	
 					case 'q':
 					case 'Q':
 						System.out.println(BACK_MSG);
@@ -219,7 +226,25 @@ public class Client {
 
 	private void adminMenu() {
 		// TODO Auto-generated method stub
+	}
 
+
+
+	private void viewTodayStatus() {
+		System.out.println("NYI");
+	}
+
+
+
+	private void viewPerson() {
+		Person p = pcws.readPerson(person.getId());
+		if (p != null) {
+			System.out.println("--> Printing person details:");
+			marshallObject(p);
+		}
+		else {
+			System.out.println("--> ERROR: Person not found.");
+		}
 	}
 
 
@@ -301,9 +326,9 @@ public class Client {
 			System.out.println(TAB + "Name: ");			
 			scanner.nextLine();
 			m.setName(scanner.nextLine());
-			System.out.println(TAB + "Type (breackfast, lunch, dinner, snak): ");
+			System.out.println(TAB + "Type (breackfast, lunch, dinner, snack): ");
 			m.setType(scanner.nextLine());
-			System.out.println(TAB + "Calories burned: ");
+			System.out.println(TAB + "Calories taken: ");
 			m.setCalories(scanner.nextInt());			
 			scanner.nextLine();
 			m = pcws.createMeal(m, person);		
@@ -317,6 +342,19 @@ public class Client {
 		} catch (InputMismatchException e) {
 			System.err.println("--> Meal not created. Check last inserted value.");
 		}				
+	}
+
+
+
+	private void insertMeal(Meal meal) {
+		Meal m = pcws.createMeal(meal, person);		
+		if (m != null) {
+			System.out.println("--> Meal created.");
+		}
+		else {
+			System.out.println("--> Meal NOT created, somthing went wrong.");
+		}
+		marshallObject(m);		
 	}
 
 
@@ -382,9 +420,9 @@ public class Client {
 		System.out.println("--> This function search and filter meals from external sources: api.foodessentials.com");
 		System.out.println("--> Please insert search criteria:");
 		System.out.println(TAB + "Search phrase: ");
-		ArrayList<Meal> mealList = new ArrayList<Meal>();
 		scanner.nextLine();
 		String searchKey = scanner.nextLine();		
+		ArrayList<Meal> mealList = new ArrayList<Meal>();
 		
 		int s = 1;
 		int n = 10;
@@ -414,6 +452,11 @@ public class Client {
 						switch((char)ch){
 						case 'i':
 						case 'I':
+							scanner.nextLine();
+							System.out.println(TAB + "Type the ID of the meal you want to insert: ");
+							Integer mealId = scanner.nextInt();
+							insertMeal(mealList.get(mealId-1));
+							System.out.println("---> Press ENTER to proceed." + i);
 							quit = true;
 							break;
 						case 'n':
@@ -500,6 +543,7 @@ public class Client {
 				+ TAB + "View [M]eals of Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "View [G]oals of Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "View [A]ctivities of Person in the session ("+ getPersonId() + ")" + RET
+				+ TAB + "View [D]etails of Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "View [T]oday status for Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
