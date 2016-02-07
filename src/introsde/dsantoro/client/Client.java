@@ -35,10 +35,7 @@ public class Client {
 	
 	
 	public Client(Pcws pcws) {
-		this.pcws = pcws;
-		
-		person = pcws.readPerson(1L);
-		
+		this.pcws = pcws;		
 		scanner = new Scanner(System.in);
 		dashboardMenu();		
 	}
@@ -225,7 +222,74 @@ public class Client {
 	}
 
 	private void adminMenu() {
-		// TODO Auto-generated method stub
+		int ch;
+		boolean quit = false;
+		
+		adminMenuMsg();
+		
+		try {
+			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
+				if (ch != '\n' && ch != '\r') {                    
+					switch((char)ch){
+					case 'm':
+					case 'M':
+						insertMeal();
+						break;
+					case 'g':
+					case 'G':						
+						insertGoal();
+						break;
+					case 'a':
+					case 'A':
+						insertActivity();
+						break;
+					case 'p':
+					case 'P':
+						//viewPeople();
+						break;
+					case 's':
+					case 'S':
+						switchPerson();
+						break;
+					case 'q':
+					case 'Q':
+						System.out.println(BACK_MSG);
+						quit = true;
+						break;                    
+					}
+					if (!quit) adminMenuMsg();
+				}
+	
+			}
+		} catch (IOException ex) {
+			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	
+		
+	}
+
+
+
+	private void switchPerson() {
+		try {			
+			System.out.println("--> Please insert ID of person to bring into session:");
+			System.out.println(TAB + "Person ID: ");
+			scanner.nextLine();
+			int newPersonId = scanner.nextInt();
+			
+			Person newPerson = pcws.readPerson(new Long(newPersonId));
+			if (newPerson != null) {
+				person = newPerson;
+				System.out.println("--> Person in session switched. Printing details:");
+				marshallObject(newPerson);
+			}
+			else {
+				System.out.println("--> Person with ID: "+newPersonId+" not present.");
+			}						
+		} catch (InputMismatchException e) {
+			System.err.println("--> Meal not created. Check last inserted value.");
+		}
+		
 	}
 
 
@@ -566,6 +630,18 @@ public class Client {
 				"--> Please tell me if you want to" + RET
 				+ TAB + "[I]insert in the Person in the session ("+ getPersonId() + ") one meal from the above list" + RET
 				+ TAB + "Move to the [N]ext result page" + RET
+				+ TAB + "[Q]uit: Go to previous menu" + RET
+				);		
+	}
+	
+	private void adminMenuMsg() {
+		System.out.println(
+				"--> Please tell me if you want to" + RET
+				+ TAB + "View all [P]eople in database" + RET
+				+ TAB + "View all [M]eals in database" + RET
+				+ TAB + "View all [G]oals in database" + RET
+				+ TAB + "View all [A]ctivities in database" + RET
+				+ TAB + "[S]witch Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
 	}
