@@ -2,7 +2,10 @@ package introsde.dsantoro.client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -13,6 +16,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import introsde.dsantoro.dbws.Activity;
@@ -37,6 +43,7 @@ public class Client {
 	public Client(Pcws pcws) {
 		this.pcws = pcws;		
 		scanner = new Scanner(System.in);
+		person = pcws.readPerson(1L);
 		dashboardMenu();		
 	}
 
@@ -218,7 +225,7 @@ public class Client {
 
 
 	private String getPersonId() {
-		return (person == null) ? "NOT YET SET" : person.getId().toString();  
+		return (person == null) ? "NOT YET SET" : person.getId().toString() + ", " + person.getFirstname();  
 	}
 
 	private void adminMenu() {
@@ -361,9 +368,45 @@ public class Client {
 	}
 
 
-
 	private void viewTodayStatus() {
-		System.out.println("NYI");
+		Person p = pcws.readPerson(person.getId());
+		Calendar today = Calendar.getInstance();		
+		today.setTime(new Date());
+		System.out.println("--> Calories taken today in meals:");
+		// Print Calories taken
+		Iterator<Meal> im = p.getMeals().getMeal().iterator();	
+		if (im.hasNext()) {
+			while(im.hasNext()){
+				Meal m = im.next();				
+				if (sameDay(m.getDatetime(),today)){
+					marshallObject(im.next());
+				}
+			}
+		}
+		else {
+			System.out.println("--> This person ("+getPersonId()+"), does not have any meal associated for today.");
+		}
+		// Print Calories burned
+		System.out.println("--> Calories burned today in activities:");
+		Iterator<Activity> ia = p.getActivities().getActivity().iterator();	
+		if (ia.hasNext()) {
+			while(ia.hasNext()){
+				Activity a = ia.next();				
+				if (sameDay(a.getDatetime(),today)){
+					marshallObject(ia.next());
+				}
+			}
+		}
+		else {
+			System.out.println("--> This person ("+getPersonId()+"), does not have any activity associated for today.");
+		}
+		System.out.println("--> Calories burned today as calorie needs:");
+		System.out.println("Calories: " + p.getDaycalories());
+	}
+
+
+	private boolean sameDay(XMLGregorianCalendar d1, Calendar d2) {
+		return ( (d1.getYear() == d2.get(Calendar.YEAR)) && (d1.getMonth() == d2.get(Calendar.MONTH)+1) && (d1.getDay() == d2.get(Calendar.DAY_OF_MONTH)) );
 	}
 
 
@@ -378,7 +421,6 @@ public class Client {
 			System.out.println("--> ERROR: Person not found.");
 		}
 	}
-
 
 
 	private void viewActivities() {
@@ -496,9 +538,9 @@ public class Client {
 			Goal g = new Goal();
 			System.out.println("--> Please insert Goal details:");
 			System.out.println(TAB + "Name: ");			
-			scanner.nextLine();
+			scanner.nextLine();			
 			g.setName(scanner.nextLine());
-			System.out.println(TAB + "Calories burned: ");
+			System.out.println(TAB + "Today calories limit: ");
 			g.setCalories(scanner.nextInt());			
 			scanner.nextLine();
 			g = pcws.createGoal(g, person);		
@@ -523,16 +565,22 @@ public class Client {
 			scanner.nextLine();
 			p.setFirstname(scanner.nextLine());
 			System.out.println(TAB + "Lastname: ");
-			p.setLastname(scanner.nextLine());
-			//System.out.println(TAB + "Birthday: ");
-			//p.setBirthday(scanner.next());
+			p.setLastname(scanner.nextLine());			
+			try {
+				XMLGregorianCalendar randomDate = getRandomDate();
+				p.setBirthday(randomDate);
+				System.out.println(TAB + "Birthday: " + randomDate + " (automatically set)");
+			} catch (DatatypeConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println(TAB + "email: ");
 			p.setEmail(scanner.nextLine());
 			System.out.println(TAB + "weight: ");
 			p.setWeight(scanner.nextLine());
 			System.out.println(TAB + "height: ");
 			p.setHeight(scanner.nextLine());
-			System.out.println(TAB + "Calories burned per day: ");
+			System.out.println(TAB + "Calories burned per day (depends on weight, heigh andtype of worka): ");
 			p.setDaycalories(scanner.nextInt());
 			scanner.nextLine();
 			person = pcws.createPerson(p);		
@@ -712,5 +760,20 @@ public class Client {
 				+ TAB + "[S]witch Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
+	}
+
+
+
+	private XMLGregorianCalendar getRandomDate() throws DatatypeConfigurationException {
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR); 		// 1. get the current year
+		int year = (int) Math.round(Math.random()*(currentYear-1950)+1950); // 2. generate a random year		
+		int dayOfYear = (int) Math.round(Math.floor(Math.random()*365)+1);
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
+		Date randomDate = calendar.getTime();		
+		GregorianCalendar c = new GregorianCalendar();
+		c.setTime(randomDate);
+		return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);		
 	}
 }
