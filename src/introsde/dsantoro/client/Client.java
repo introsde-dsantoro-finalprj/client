@@ -233,19 +233,19 @@ public class Client {
 					switch((char)ch){
 					case 'm':
 					case 'M':
-						insertMeal();
+						viewAllMeals();
 						break;
 					case 'g':
 					case 'G':						
-						insertGoal();
+						viewAllGoals();
 						break;
 					case 'a':
 					case 'A':
-						insertActivity();
+						viewAllActivities();
 						break;
 					case 'p':
 					case 'P':
-						//viewPeople();
+						viewPeople();
 						break;
 					case 's':
 					case 'S':
@@ -266,6 +266,74 @@ public class Client {
 		}
 	
 		
+	}
+
+
+
+	private void viewAllGoals() {
+		Collection<Goal> goals = new ArrayList<Goal>();
+		goals = pcws.readGoalList();
+		if (goals.isEmpty()) {
+			System.out.println("--> No goal present in the DB. Please create one first.");
+		}
+		else {
+			Iterator<Goal> i = goals.iterator();
+			System.out.println("--> Found "+goals.size()+" goals, printing:");
+			while(i.hasNext()) {
+				marshallObject(i.next());
+			}
+		}
+	}
+
+
+
+	private void viewAllActivities() {
+		Collection<Activity> activities = new ArrayList<Activity>();
+		activities = pcws.readActivityList();
+		if (activities.isEmpty()) {
+			System.out.println("--> No activity present in the DB. Please create one first.");
+		}
+		else {
+			Iterator<Activity> i = activities.iterator();
+			System.out.println("--> Found "+activities.size()+" activities, printing:");
+			while(i.hasNext()) {
+				marshallObject(i.next());
+			}
+		}
+	}
+
+
+
+	private void viewAllMeals() {
+		Collection<Meal> meals = new ArrayList<Meal>();
+		meals = pcws.readMealList();
+		if (meals.isEmpty()) {
+			System.out.println("--> No meal present in the DB. Please create one first.");
+		}
+		else {
+			Iterator<Meal> i = meals.iterator();
+			System.out.println("--> Found "+meals.size()+" meals, printing:");
+			while(i.hasNext()) {
+				marshallObject(i.next());
+			}
+		}
+	}
+
+
+
+	private void viewPeople() {
+		Collection<Person> people = new ArrayList<Person>();
+		people = pcws.readPersonList();
+		if (people.isEmpty()) {
+			System.out.println("--> No person present in the DB. Please create one first.");
+		}
+		else {
+			Iterator<Person> i = people.iterator();
+			System.out.println("--> Found "+people.size()+" people, printing:");
+			while(i.hasNext()) {
+				marshallObject(i.next());
+			}
+		}		
 	}
 
 
