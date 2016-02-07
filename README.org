@@ -18,6 +18,7 @@
      #+BEGIN_EXAMPLE
      ant execute.client
      #+END_EXAMPLE
+  6) Please be patient since services deployed on Heroku app could be sleeping...
      
 * General description
   The application permits a person to add his personal information together with health information like weight, height and age (calculated from date of birth/birthdate). Moreover the person can add an indefinite number of meals and one goal per day, both with respective attributes.

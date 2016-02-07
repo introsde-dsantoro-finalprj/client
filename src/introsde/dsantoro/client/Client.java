@@ -43,7 +43,7 @@ public class Client {
 	public Client(Pcws pcws) {
 		this.pcws = pcws;		
 		scanner = new Scanner(System.in);
-		person = pcws.readPerson(1L);
+		//person = pcws.readPerson(1L);
 		dashboardMenu();		
 	}
 
