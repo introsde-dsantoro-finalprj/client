@@ -497,7 +497,7 @@ public class Client {
 			System.out.println("--> Please insert Goal details:");
 			System.out.println(TAB + "Name: ");			
 			scanner.nextLine();
-			g.setName(scanner.nextLine());			
+			g.setName(scanner.nextLine());
 			System.out.println(TAB + "Calories burned: ");
 			g.setCalories(scanner.nextInt());			
 			scanner.nextLine();
@@ -647,7 +647,7 @@ public class Client {
 
 	private void dashboardMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "[I]nsert a Person" + RET
 				+ TAB + "[W]ork on Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[A]dmin menu" + RET
@@ -659,7 +659,7 @@ public class Client {
 
 	private void insertInPersonMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "Insert a new [M]eal on Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "Insert a new [G]oal on Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "Insert a new [A]ctivity on Person in the session ("+ getPersonId() + ")" + RET
@@ -671,7 +671,7 @@ public class Client {
 
 	private void viewInPersonMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "View [M]eals of Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "View [G]oals of Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "View [A]ctivities of Person in the session ("+ getPersonId() + ")" + RET
@@ -685,7 +685,7 @@ public class Client {
 
 	private void workOnPersonMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "[S]earch meals from external sources" + RET
 				+ TAB + "[I]sert Meal, Goal or Activity on Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[V]iew Meals, Goals, Activities and others on Person in the session ("+ getPersonId() + ")" + RET
@@ -695,7 +695,7 @@ public class Client {
 	
 	private void searchMealsMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "[I]insert in the Person in the session ("+ getPersonId() + ") one meal from the above list" + RET
 				+ TAB + "Move to the [N]ext result page" + RET
 				+ TAB + "[Q]uit: Go to previous menu" + RET
@@ -704,7 +704,7 @@ public class Client {
 	
 	private void adminMenuMsg() {
 		System.out.println(
-				"--> Please tell me if you want to" + RET
+				RET + "--> Please tell me if you want to" + RET
 				+ TAB + "View all [P]eople in database" + RET
 				+ TAB + "View all [M]eals in database" + RET
 				+ TAB + "View all [G]oals in database" + RET
