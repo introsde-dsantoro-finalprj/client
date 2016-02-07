@@ -131,18 +131,32 @@
    - Name: pcsw
    - Default Port: 6905
    - Heroku app URL: secret-shelf-40531.herokuapp.com
+** Business Logic service
+   - suggestion fabbisogno calorico
+     - input: peso età altezza
+     - output: calorie giornaliere
+   - controllo goal (put risorsa goalStatus)
+     - input: lista cal burned, lista cal taken
+     - output: stessa risorsa con Ok CREATED e link con ID (volatile: timestamp)
+       - Link a nuova risorsa: goalStatus (con ID volatile) che contiene
+         - valutation: BENE/MALE,
+	 - percentuale taken rispetto a burned
+         - calorie ancora da bruciare rispetto ora del giorno
+	 - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
+   - filtro per stampe human nel client
+   - controllo se arivo da menu admin
 * Client operations
   1) Menu inserimento persona
      1) Inserisco persona
   2) Menu operazioni su persona
-     1) Inserisco meal libero
-        1) invoca checkTodayGoal su blws
-	2) propongo cibi con giuste calorie in base all'orario
-     2) Cerco nella lista meal
+     1) Cerco nella lista meal
         1) Inserisco meal trovato
 	   1) invoca checkTodayGoal su blws
 	   2) recupera frase motivazionale
         2) Non inserisco meal trovato
+     2) Inserisco meal libero
+        1) invoca checkTodayGoal su blws
+	2) propongo cibi con giuste calorie in base all'orario
      3) Inserisco attività
         1) invoca checkTodayGoal su blws
 	2) recupera frase motivazionale
