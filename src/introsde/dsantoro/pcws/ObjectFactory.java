@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _CheckGoal_QNAME = new QName("http://pcws.dsantoro.introsde/", "checkGoal");
     private final static QName _ReadGoalListResponse_QNAME = new QName("http://pcws.dsantoro.introsde/", "readGoalListResponse");
     private final static QName _CreateMeal_QNAME = new QName("http://pcws.dsantoro.introsde/", "createMeal");
     private final static QName _ReadGoal_QNAME = new QName("http://pcws.dsantoro.introsde/", "readGoal");
@@ -41,6 +42,7 @@ public class ObjectFactory {
     private final static QName _ReadGoalResponse_QNAME = new QName("http://pcws.dsantoro.introsde/", "readGoalResponse");
     private final static QName _ReadMealList_QNAME = new QName("http://pcws.dsantoro.introsde/", "readMealList");
     private final static QName _CreatePersonResponse_QNAME = new QName("http://pcws.dsantoro.introsde/", "createPersonResponse");
+    private final static QName _CheckGoalResponse_QNAME = new QName("http://pcws.dsantoro.introsde/", "checkGoalResponse");
     private final static QName _CreateActivity_QNAME = new QName("http://pcws.dsantoro.introsde/", "createActivity");
     private final static QName _CreatePerson_QNAME = new QName("http://pcws.dsantoro.introsde/", "createPerson");
     private final static QName _ReadPerson_QNAME = new QName("http://pcws.dsantoro.introsde/", "readPerson");
@@ -64,6 +66,14 @@ public class ObjectFactory {
      */
     public CreateMeal createCreateMeal() {
         return new CreateMeal();
+    }
+
+    /**
+     * Create an instance of {@link CheckGoal }
+     * 
+     */
+    public CheckGoal createCheckGoal() {
+        return new CheckGoal();
     }
 
     /**
@@ -195,6 +205,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CheckGoalResponse }
+     * 
+     */
+    public CheckGoalResponse createCheckGoalResponse() {
+        return new CheckGoalResponse();
+    }
+
+    /**
      * Create an instance of {@link ReadMealList }
      * 
      */
@@ -264,6 +282,15 @@ public class ObjectFactory {
      */
     public ReadMeal createReadMeal() {
         return new ReadMeal();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CheckGoal }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://pcws.dsantoro.introsde/", name = "checkGoal")
+    public JAXBElement<CheckGoal> createCheckGoal(CheckGoal value) {
+        return new JAXBElement<CheckGoal>(_CheckGoal_QNAME, CheckGoal.class, null, value);
     }
 
     /**
@@ -417,6 +444,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://pcws.dsantoro.introsde/", name = "createPersonResponse")
     public JAXBElement<CreatePersonResponse> createCreatePersonResponse(CreatePersonResponse value) {
         return new JAXBElement<CreatePersonResponse>(_CreatePersonResponse_QNAME, CreatePersonResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CheckGoalResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://pcws.dsantoro.introsde/", name = "checkGoalResponse")
+    public JAXBElement<CheckGoalResponse> createCheckGoalResponse(CheckGoalResponse value) {
+        return new JAXBElement<CheckGoalResponse>(_CheckGoalResponse_QNAME, CheckGoalResponse.class, null, value);
     }
 
     /**

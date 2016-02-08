@@ -400,8 +400,9 @@ public class Client {
 		else {
 			System.out.println("--> This person ("+getPersonId()+"), does not have any activity associated for today.");
 		}
-		System.out.println("--> Calories burned today as calorie needs:");
+		System.out.println("--> Calories burned today as daily calorie needs:");
 		System.out.println("Calories: " + p.getDaycalories());
+		todayGoalCheck();
 	}
 
 
@@ -416,6 +417,7 @@ public class Client {
 		if (p != null) {
 			System.out.println("--> Printing person details:");
 			marshallObject(p);
+			todayGoalCheck();
 		}
 		else {
 			System.out.println("--> ERROR: Person not found.");
@@ -481,6 +483,7 @@ public class Client {
 			a = pcws.createActivity(a, person);		
 			if (a != null) {
 				System.out.println("--> Activity created.");
+				todayGoalCheck();
 			}
 			else {
 				System.out.println("--> Activity NOT created, somthing went wrong.");
@@ -488,7 +491,7 @@ public class Client {
 			marshallObject(a);
 		} catch (InputMismatchException e) {
 			System.err.println("--> Activity not created. Check last inserted value.");
-		}		
+		}
 	}
 
 
@@ -508,6 +511,7 @@ public class Client {
 			m = pcws.createMeal(m, person);		
 			if (m != null) {
 				System.out.println("--> Meal created.");
+				todayGoalCheck();
 			}
 			else {
 				System.out.println("--> Meal NOT created, somthing went wrong.");
@@ -524,6 +528,7 @@ public class Client {
 		Meal m = pcws.createMeal(meal, person);		
 		if (m != null) {
 			System.out.println("--> Meal created.");
+			todayGoalCheck();
 		}
 		else {
 			System.out.println("--> Meal NOT created, somthing went wrong.");
@@ -546,6 +551,7 @@ public class Client {
 			g = pcws.createGoal(g, person);		
 			if (g != null) {
 				System.out.println("--> Goal created.");
+				todayGoalCheck();
 			}
 			else {
 				System.out.println("--> Goal NOT created, somthing went wrong.");
@@ -775,5 +781,12 @@ public class Client {
 		GregorianCalendar c = new GregorianCalendar();
 		c.setTime(randomDate);
 		return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);		
+	}
+
+
+
+	private void todayGoalCheck() {
+		String checkGoalResult = pcws.checkGoal(person.getId());
+		System.out.println(checkGoalResult);
 	}
 }

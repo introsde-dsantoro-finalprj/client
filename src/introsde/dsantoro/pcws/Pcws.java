@@ -228,4 +228,19 @@ public interface Pcws {
         @WebParam(name = "quantity", targetNamespace = "")
         int quantity);
 
+    /**
+     * 
+     * @param personId
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(name = "goalEvalJson", targetNamespace = "")
+    @RequestWrapper(localName = "checkGoal", targetNamespace = "http://pcws.dsantoro.introsde/", className = "introsde.dsantoro.pcws.CheckGoal")
+    @ResponseWrapper(localName = "checkGoalResponse", targetNamespace = "http://pcws.dsantoro.introsde/", className = "introsde.dsantoro.pcws.CheckGoalResponse")
+    @Action(input = "http://pcws.dsantoro.introsde/Pcws/checkGoalRequest", output = "http://pcws.dsantoro.introsde/Pcws/checkGoalResponse")
+    public String checkGoal(
+        @WebParam(name = "personId", targetNamespace = "")
+        Long personId);
+
 }
