@@ -157,8 +157,8 @@
    - controllo goal (put risorsa goalStatus)
      - input: lista cal burned, lista cal taken
      - output: stessa risorsa con Ok CREATED e link con ID (volatile: timestamp)
-       - Link a nuova risorsa: goalStatus (con ID volatile) che contiene
-         - valutation: BENE/MALE,
+       - Link a nuova risorsa: goalResult (con ID volatile) che contiene
+         - evaluation: BENE/MALE,
 	 - percentuale taken rispetto a burned
          - calorie ancora da bruciare rispetto ora del giorno
 	 - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
