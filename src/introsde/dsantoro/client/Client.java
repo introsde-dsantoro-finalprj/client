@@ -21,6 +21,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
+import org.json.JSONObject;
+
 import introsde.dsantoro.dbws.Activity;
 import introsde.dsantoro.dbws.Goal;
 import introsde.dsantoro.dbws.Meal;
@@ -787,6 +789,12 @@ public class Client {
 
 	private void todayGoalCheck() {
 		String checkGoalResult = pcws.checkGoal(person.getId());
-		System.out.println(checkGoalResult);
+		JSONObject goalEval = new JSONObject(checkGoalResult);
+		System.out.println(
+				RET + "--> Today evaluation: (calcualted from remote service)" + RET
+				+ TAB +"Evaluation message: " + goalEval.get("evalMsg") + RET
+				+ TAB +"Goal satisfaction percentage: "+ goalEval.get("goalSatisfaction") + " %" + RET
+				+ TAB +"Calories taken: " + goalEval.get("caloriesTaken") + RET
+				);		
 	}
 }
