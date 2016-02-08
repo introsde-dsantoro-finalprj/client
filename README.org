@@ -1,26 +1,7 @@
 #+TITLE: IntroSDE Final Project
 #+AUTHOR: Daniele Santoro
 #+DATE: 10/02/2016
-* Client deploy and test
-  1) Clone the repository
-  2) Move into =client= folder
-  3) Deploy with:
-     #+BEGIN_EXAMPLE
-     ant install
-     #+END_EXAMPLE
-  4) Set configuration ENV VARS:
-     #+BEGIN_EXAMPLE
-     #!/bin/bash
-     export PCWS_ENDPOINT=secret-shelf-40531.herokuapp.com
-     export PCWS_PORT=80
-     #+END_EXAMPLE
-  5) Start the client application
-     #+BEGIN_EXAMPLE
-     ant execute.client
-     #+END_EXAMPLE
-  6) Please be patient since services deployed on Heroku app could be sleeping...
-     
-* General description
+* Introduction
   The application permits a person to add his personal information together with health information like weight, height and age (calculated from date of birth/birthdate). Moreover the person can add an indefinite number of meals and one goal per day, both with respective attributes.
   The system should store for each meal the datetime, the amount of calories and the type of meal. The goal of the day is defined with the day and the amount of calories.
   The person can also insert in the system the sport activities performed in a day with its amount of calories burned.
@@ -28,9 +9,59 @@
   Based on the sum of calories taken with meals, burned during sport activities and burned during regular day activities, the system should be able to compute if the person has reached the goal of the day or not.
   Optionally the system can calculate the amount of calories a person can assume during a regular day based on the weight and height and activities planned.
   
-** TODO The system should use an external API to retrieve information.
-   - Motivational phrases
-   - List of meals
+* Architecture
+  The below image represent the deployed architecture:
+  [[file:docs/architecture.png]]
+* Services Description
+** DB Service
+   - Name : dbws
+   - Default Port : 6902
+   - Heroku app URL: murmuring-spire-46621.herokuapp.com
+** Storage Service
+   - Name: storagews
+   - Default Port : 6903
+   - Heroku app URL: damp-fortress-22612.herokuapp.com
+** Adapter Service
+   - Name: adpws
+   - Default Port: 6904
+   - Heroku app URL: pure-scrubland-58213.herokuapp.com
+** Process centric Service
+   - Name: pcsw
+   - Default Port: 6905
+   - Heroku app URL: secret-shelf-40531.herokuapp.com
+** Business Logic service
+   - Name: blsw
+   - Default Port: 6909
+   - Heroku app URL: desolate-spire-97481.herokuapp.com
+*** Notes
+   - suggestion fabbisogno calorico
+   - percentuale taken rispetto a burned
+   - calorie ancora da bruciare rispetto ora del giorno
+   - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
+   - controllo se arivo da menu admin
+* Deployment and testing with the client
+  All services are already deployed on [[https://www.heroku.com][Heroku]]. The client can be deployed on a remote machine connected to the Internet.
+
+  Each service retrieves *at run-time* URLs of dependent services using configuration in =ENVIRONENT VARIABLES=. This behavior simplified the deployment on Heroku during development.
+** Client deploy and test
+   1) Clone the repository
+   2) Move into =client= folder
+   3) Deploy with:
+      #+BEGIN_EXAMPLE
+      ant install
+      #+END_EXAMPLE
+   4) Set configuration ENV VARS:
+      #+BEGIN_EXAMPLE
+      #!/bin/bash
+      export PCWS_ENDPOINT=secret-shelf-40531.herokuapp.com
+      export PCWS_PORT=80
+      #+END_EXAMPLE
+   5) Start the client application
+      #+BEGIN_EXAMPLE
+      ant execute.client
+      #+END_EXAMPLE
+   6) Please be patient since services deployed on Heroku app could be sleeping...
+      
 
 * Model draft
 ** Objects
@@ -133,37 +164,7 @@
      - http://blog.bdoughan.com/2010/07/jpa-entities-to-xml-bidirectional.html
      - http://stackoverflow.com/questions/13957068/using-moxy-to-avoid-cycle-xmlinversereference-xmlid
 
-* Services Description
-** DB Service
-   - Name : dbws
-   - Default Port : 6902
-   - Heroku app URL: murmuring-spire-46621.herokuapp.com
-** Storage Service
-   - Name: storagews
-   - Default Port : 6903
-   - Heroku app URL: damp-fortress-22612.herokuapp.com
-** Adapter Service
-   - Name: adpws
-   - Default Port: 6904
-   - Heroku app URL: pure-scrubland-58213.herokuapp.com
-** Process centric Service
-   - Name: pcsw
-   - Default Port: 6905
-   - Heroku app URL: secret-shelf-40531.herokuapp.com
-** Business Logic service
-   - suggestion fabbisogno calorico
-     - input: peso età altezza
-     - output: calorie giornaliere
-   - controllo goal (put risorsa goalStatus)
-     - input: lista cal burned, lista cal taken
-     - output: stessa risorsa con Ok CREATED e link con ID (volatile: timestamp)
-       - Link a nuova risorsa: goalResult (con ID volatile) che contiene
-         - evaluation: BENE/MALE,
-	 - percentuale taken rispetto a burned
-         - calorie ancora da bruciare rispetto ora del giorno
-	 - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
-   - filtro per stampe human nel client
-   - controllo se arivo da menu admin
+
 * Client operations
   1) Menu inserimento persona
      1) Inserisco persona
@@ -177,7 +178,7 @@
         1) invoca checkTodayGoal su blws
 	2) propongo cibi con giuste calorie in base all'orario
      3) Inserisco attività
-        1) invoca checkTodayGoal su blws
+        1) invoca <checkTodayGoal su blws
 	2) recupera frase motivazionale
      4) Inserisco goal
      5) Vedo miei meals
