@@ -379,7 +379,7 @@ public class Client {
 			while(im.hasNext()){
 				Meal m = im.next();				
 				if (sameDay(m.getDatetime(),today)){
-					marshallObject(im.next());
+					marshallObject(m);
 				}
 			}
 		}
@@ -393,7 +393,7 @@ public class Client {
 			while(ia.hasNext()){
 				Activity a = ia.next();				
 				if (sameDay(a.getDatetime(),today)){
-					marshallObject(ia.next());
+					marshallObject(a);
 				}
 			}
 		}
