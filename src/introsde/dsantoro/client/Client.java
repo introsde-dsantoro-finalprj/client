@@ -20,8 +20,14 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import introsde.dsantoro.dbws.Activity;
 import introsde.dsantoro.dbws.Goal;
@@ -34,10 +40,12 @@ public class Client {
 	Pcws pcws;
 	Person person = null;
 	Scanner scanner;
+	Boolean prettyPrint = true;
 
 	private final String RET = "\n";
 	private final String TAB = "\t";
-
+	private static boolean skipNL;
+	
 	private static final String QUIT_MSG = "--> Quitting. Remember to eat healthy !!!";
 	private static final String BACK_MSG = "--> Going back to previous menu";
 	
@@ -46,6 +54,9 @@ public class Client {
 		this.pcws = pcws;		
 		scanner = new Scanner(System.in);
 		//person = pcws.readPerson(1L);
+		System.out.println("\n\n------ CLIENT APPLICATION TO TEST DSANTORO INTROSDE FINAL PROJECT ------");
+		System.out.println(" HINT: Please choose letter in square brackets from menus to select the operation.");
+		System.out.println(" HINT: Current output style is: " + getPrettyPrint() + ". You can change it from [A]dmin Menu.");
 		dashboardMenu();		
 	}
 
@@ -259,6 +270,10 @@ public class Client {
 					case 's':
 					case 'S':
 						switchPerson();
+						break;
+					case 'c':
+					case 'C':
+						prettyPrint ^= true;
 						break;
 					case 'q':
 					case 'Q':
@@ -692,14 +707,63 @@ public class Client {
 			JAXBContext jc = JAXBContext.newInstance(o.getClass());
 			Marshaller m = jc.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			m.marshal( (new JAXBElement<Object>(new QName("uri","local"), Object.class, o)), System.out);			
+			if (prettyPrint) {
+				try {
+					// Create the Document
+			        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			        DocumentBuilder db = dbf.newDocumentBuilder();
+			        Document document = db.newDocument();
+			        m.marshal( (new JAXBElement<Object>(new QName("uri","local"), Object.class, o)), document);
+					prettyPrintXML(document.getChildNodes(), o.getClass().getName());
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			}
+			else {
+				m.marshal( (new JAXBElement<Object>(new QName("uri","local"), Object.class, o)), System.out);	
+			}
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-
+	private void prettyPrintXML(NodeList nodeList, String className) {
+		Node root = nodeList.item(0);
+		System.out.println(printXML(root));
+	}
+	
+	private static String printXML(Node rootNode) {
+	    String tab = "";
+	    skipNL = false;
+	    return(printXML(rootNode, tab));
+	}
+	private static String printXML(Node rootNode, String tab) {
+	    String print = "";
+	    if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
+	        print += "\n"+tab+""+rootNode.getNodeName().toUpperCase()+": ";
+	    }
+	    NodeList nl = rootNode.getChildNodes();
+	    if(nl.getLength()>0) {
+	        for (int i = 0; i < nl.getLength(); i++) {
+	            print += printXML(nl.item(i), tab+"  ");    // \t
+	        }
+	    } else {
+	        if(rootNode.getNodeValue()!=null) {
+	            print = rootNode.getNodeValue();
+	        }
+	        skipNL = true;
+	    }
+	    if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
+	        if(!skipNL) {
+	            print += "\n"+tab;
+	        }
+	        skipNL = false;
+	        //print += "</"+rootNode.getNodeName()+">";
+	    }
+	    return(print);
+	}
 
 	private void dashboardMenuMsg() {
 		System.out.println(
@@ -765,9 +829,16 @@ public class Client {
 				+ TAB + "View all [M]eals in database" + RET
 				+ TAB + "View all [G]oals in database" + RET
 				+ TAB + "View all [A]ctivities in database" + RET
+				+ TAB + "[C]hange style of printed output (current: "+ getPrettyPrint() + ")" + RET
 				+ TAB + "[S]witch Person in the session ("+ getPersonId() + ")" + RET
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
+	}
+
+
+
+	private String getPrettyPrint() {
+		return (prettyPrint) ? "Human readable messages" : "Machine readable messages (XML)";
 	}
 
 
