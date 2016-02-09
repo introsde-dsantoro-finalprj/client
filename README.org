@@ -13,7 +13,7 @@
   [[file:docs/architecture.png]]\\
   /The arrows shows which is the node that initiate the communication in order to read/write information, of course the messages are exchanged in both ways./
 
-  All the components a part the DB service can be deployed in order to grant a fault-tolerance/high availability architecture simply decentralizing them on the network, increasing the number of instance of each service and putting load balancers/HA proxies in front of them. 
+  Excluding the DB service, all other components can be deployed to grant a fault-tolerance/high availability architecture simply: decentralizing them on the network, increasing the number of instance of each service and putting load balancers/HA proxies in front of them. 
   
 * Services Description
   - Code for each service is available at this URL: https://github.com/introsde-dsantoro-finalprj
@@ -24,7 +24,7 @@
    - Heroku app URL: murmuring-spire-46621.herokuapp.com
    - Service endpoint: /ws/dbws
 
-   This service is responsible to grant persistent on data modifications. It exposes to north-bound services basic CRUD operations using a SOAP service. SOAP methods for each entity in the model are translated into SQL query, which are finally executed in a remote MySQL DBMS instance.
+   This service is responsible to persist data modifications. It exposes to north-bound services basic CRUD operations using a SOAP service. SOAP methods for each entity in the model are translated into SQL query, which are finally executed in a remote MySQL DBMS instance.
 
    EclipseLink has been used in order to map classes with the ER model via the JPA interface. As default the service uses the configuration stored on the =persistence.xml=, but the service can be configured to use a remote DB at run-time using ENV_VARS, see: [[https://github.com/introsde-dsantoro-finalprj/dbws/blob/master/serviceSetup-example.sh][serviceSetup-example.sh]] script.
 ** Adapter Service
@@ -33,9 +33,9 @@
    - Heroku app URL: pure-scrubland-58213.herokuapp.com
    - Service endpoint: /ws/adpws
    
-   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently support one external provider (http://developer.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
+   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently it supports one external provider (http://developer.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
 
-   It exposes a single REST API to the other services, but it include an interesting function on data transformation, please see the below section: /Interesting data flows/.
+   It exposes a single REST API to the other services, but it includes an interesting function on data transformation, please see the below section: /Interesting data flows/.
 
 ** Storage Service
    - Name: storagews
@@ -43,7 +43,7 @@
    - Heroku app URL: damp-fortress-22612.herokuapp.com
    - Service endpoint: /ws/storagews
 
-   This service act as a gateway for all the storage operations: it expose a SOAP interface to the north-bound services and two clients (REST to the adapter service and SOAP to the database service) in order to manage communication with south-bound storage services mentioned above. All north-bound services that needs to read/write data communicates only with this layer.
+   This service acts as a gateway for all the storage operations: it exposes a SOAP interface to the north-bound services and two clients (REST to the adapter service and SOAP to the database service) in order to manage communication with south-bound storage services mentioned above. All north-bound services that need to read or write on the persistent layer must communicate with this service.
 
    A very important function of this component is that it hides completely what is "under the scenes" of the storage layer, for instance: type of DBMS used, language used to grant persistency, data providers details.
 
