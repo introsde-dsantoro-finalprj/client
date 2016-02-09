@@ -62,17 +62,23 @@
    - Heroku app URL: desolate-spire-97481.herokuapp.com
    - Service endpoint: /ws/blws
 
-   This service manages all the complex operations of the application, like heavy calculation or complex searches on the external data. It exposes a REST interface and uses a SOAP based client to retrieve data from the storage service.
+   This service manages all the complex operations of the application, like heavy calculation or complex searches on the external data. It exposes a REST (with full HATEOAS constraint) interface and uses a SOAP based client to retrieve data from the storage service.
 
    This service has been implemented in order to demonstrates that in a SOA architecture it is possible to have independent services, that in some cases are also highly decoupled (like in microservices architectures) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
 
 * Interesting data flows
 ** User insert a meal, goal or activity
+   When the user insert from the client application a meal, a goal or an activity, the process centric service react first of all storing new data into the persitent storage and then controlling if the goal has been achieved or not sending the goal, the list of calories burned and the list of calories taken to the business logic service, which in turn calculate the results.
 ** User search for meals
+   When a user search for meal from the client application, it inserts a search key. The key is passed to the storage service which in turn call the adapter service. In the adapter service data is retrieved from an external source, converted and then sent back to the client in the same way. The client can move to see other results (last call sequence is repeated with new parameters) or choose to insert the meal just retrieved from the external data source to its meals of the day, calling the first process described above.
 ** User check status of its goal
+   When user submits input to calculate his goal evaluation using the client, the process centric service pass the data to the business logic service via POST, a new resource (goalCheck) is stored on an in-memory DB and a location to the new resource is returned. The process centric service visits the newly created resource and follow the contained link (~rel=goalEval~) in order to get the goal evaluation resource.
 ** External data retrieving and adaptation
-   1) tre chiamate per recupero dato esterno (link to food docs)
-   2) conversione in formato per app
+   Once the adapter service retrieves data from the external provider (api.foodessentials.com) it makes three calls:
+   1) Get a session ID using configurable (ENV_VARS) token via HTTP call and gets a Json response
+   2) Get the list of meals via HTTP call and gets a Json response
+   3) For each list retrieves the specified calories via another HTTP call and gets a Json response
+   4) Combine the meal details retrieved from 2) and the meal calories retrieved from 3) into an XML data structure compliant with the application domain model.
 * Deployment and testing using the client
   All services are already deployed on [[https://www.heroku.com][Heroku]]. See service specific repository for more details on how to deploy it.
 
@@ -98,7 +104,7 @@
       #+END_EXAMPLE
    6) Please be patient since services deployed on Heroku app could be sleeping...
 * TODO Notes
- - suggestion fabbisogno calorico
+ - suggestion fabbisogno calorico giornaliaro
  - percentuale taken rispetto a burned
  - calorie ancora da bruciare rispetto ora del giorno
  - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
