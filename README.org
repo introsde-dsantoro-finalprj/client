@@ -16,7 +16,8 @@
   All the components a part the DB service can be deployed in order to grant a fault-tolerance/high availability architecture simply decentralizing them on the network, increasing the number of instance of each service and putting load balancers/HA proxies in front of them. 
   
 * Services Description
-  Detailed documentation about the API used by all the services is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
+  - Code for each service is available at this URL: https://github.com/introsde-dsantoro-finalprj
+  - Detailed documentation about the API used by each service is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
 ** DB Service
    - Name : dbws
    - Default Port : 6902
