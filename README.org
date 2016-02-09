@@ -13,6 +13,9 @@
   The below image represent the deployed architecture:
   [[file:docs/architecture.png]]\\
   /The arrows shows which is the node that initiate the communication in order to read/write information, of course the messages are exchanged in both ways./
+
+  All the components a part the DB service can be deployed in order to grant a fault-tolerance/high availability architecture simply decentralizing them on the network, increasing the number of instance of each service and putting load balancers/HA proxies in front of them. 
+  
 * Services Description
   Detailed documentation for all the services is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
 ** DB Service
@@ -21,28 +24,49 @@
    - Heroku app URL: murmuring-spire-46621.herokuapp.com
    - Service endpoint: /ws/dbws
 
-   This service...
+   This service is responsible to grant persistent on data modifications. It exposes to north-bound services basic CRUD operations using a SOAP service. SOAP methods for each entity in the model are translated into SQL query, which are finally executed in a remote MySQL DBMS instance.
+
+   In the service has been used JPA in order to map class and ER models. Remote DB can be configured using EN_VARS, see: [[https://github.com/introsde-dsantoro-finalprj/dbws/blob/master/serviceSetup-example.sh][serviceSetup-example.sh]] script.
+** Adapter Service
+   - Name: adpws
+   - Default Port: 6904
+   - Heroku app URL: pure-scrubland-58213.herokuapp.com
+   - Service endpoint: /ws/adpws
+   
+   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently support one external provider (api.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
+
+   It exposes a single REST API to the other services, but it include an interesting function on data transformation, please see the below section: /Interesting data flows/.
 
 ** Storage Service
    - Name: storagews
    - Default Port : 6903
    - Heroku app URL: damp-fortress-22612.herokuapp.com
    - Service endpoint: /ws/storagews
-** Adapter Service
-   - Name: adpws
-   - Default Port: 6904
-   - Heroku app URL: pure-scrubland-58213.herokuapp.com
-   - Service endpoint: /ws/adpws
+
+   This service act as a gateway for all the storage operations: it expose a SOAP interface to the north-bound services and two clients (REST to the adapter service and SOAP to the database service) in order to manage communication with south-bound storage services mentioned above. All north-bound services that needs to read/write data communicates only with this layer.
+
+   A very important function of this component is that it hides completely what is "under the scenes" of the storage layer, for instance: type of DBMS used, language used to grant persistency, data providers details.
+
 ** Process centric Service
    - Name: pcsw
    - Default Port: 6905
    - Heroku app URL: secret-shelf-40531.herokuapp.com
    - Service endpoint: /ws/pcws
+
+   Similarly to the previous, this service is responsible to redirect all call coming from clients to the appropriate south-bound service/s. It exposes a SOAP interface to clients but also implements two clients to communicate respectively with the business logic service, via REST and with the storage service via SOAP.
+
+   This service act as orchestrator for the entire application, indeed it provides another important feature: it drives complex operations decoupling them into simple requests towards the south-bound services. See section /Interesting data flows/ for details.
+   
 ** Business Logic service
    - Name: blsw
    - Default Port: 6909
    - Heroku app URL: desolate-spire-97481.herokuapp.com
    - Service endpoint: /ws/blws
+
+   This service manages all the complex operations of the application, like heavy calculation or complex searches on the external data. It exposes a REST interface and uses a SOAP based client to retrieve data from the storage service.
+
+   This service has been implemented in order to demonstrates that in a SOA architecture it is possible to have independent services, that in some cases are also highly decoupled (like in microservices architectures) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
+
 * Interesting data flows
 ** User insert a meal, goal or activity
 ** User search for meals
@@ -80,22 +104,3 @@
  - calorie ancora da bruciare rispetto ora del giorno
  - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
  - controllo se arivo da menu admin
-* Questions
-  1) How can I have my data model structure shared between services ? Can I just share the model package or do I have to manually/programmatically marshall and unmarshall objects between services mapping each fields ?
-  2) Architecture validation
-  3) Is the first "storage services" layer just a gateway to redirect the message on the underling data-sources ? It is similar to the process centric services in my opinion, right ?
-  4) Should we use BPEL language for composition and orchestration ?
-  5) Doubts on idem-potency in REST if another actor change the resource during my repetitive calls.
-  6) Issue with OneToMany on Parent -> Child and JAXB binding
-     Think to have a Parent class connected with a Child class with a OneToMany relation. We have child object attribute in Parent and parent object attribute in Child.
-
-     Now, in child we must mark =getParent()= method with @XmlTransient otherwise we have a cycle when marshall and unmarshall Parent.
-
-     This create issues when saving a Parent containing children through SOAP because the Parent reference inside the Child is not unmarshalled and murshalled properly.
-     
-     - http://stackoverflow.com/questions/3073364/jaxb-mapping-cyclic-references-to-xml
-     - http://stackoverflow.com/questions/17295370/a-cycle-is-detected-in-the-object-graph-this-will-cause-infinitely-deep-xml
-     - http://stackoverflow.com/questions/17576823/this-will-cause-infinitely-deep-xml
-     - http://blog.bdoughan.com/2010/07/jpa-entities-to-xml-bidirectional.html
-     - http://stackoverflow.com/questions/13957068/using-moxy-to-avoid-cycle-xmlinversereference-xmlid
-      
