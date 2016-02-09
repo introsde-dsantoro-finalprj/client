@@ -1,4 +1,4 @@
-#+TITLE: IntroSDE Final Project
+#+TITLE: IntroSDE Final Project - Daniele Santoro
 #+AUTHOR: Daniele Santoro
 #+DATE: 10/02/2016
 * Introduction
@@ -40,9 +40,11 @@
    - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
    - controllo se arivo da menu admin
 * Deployment and testing with the client
-  All services are already deployed on [[https://www.heroku.com][Heroku]]. The client can be deployed on a remote machine connected to the Internet.
+  All services are already deployed on [[https://www.heroku.com][Heroku]]. See service specific repository for more detail on how to deploy it.
 
   Each service retrieves *at run-time* URLs of dependent services using configuration in =ENVIRONENT VARIABLES=. This behavior simplified the deployment on Heroku during development.
+
+  The client can be deployed on a remote machine connected to the Internet following instructions below.
 ** Client deploy and test
    1) Clone the repository
    2) Move into =client= folder
