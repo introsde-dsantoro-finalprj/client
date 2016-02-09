@@ -867,9 +867,9 @@ public class Client {
 				+ TAB +"Evaluation message: " + goalEval.get("evalMsg") + RET
 				+ TAB +"Goal satisfaction percentage: "+ goalEval.get("goalSatisfaction") + " %" + RET
 				+ TAB +"Calories taken: " + goalEval.get("caloriesTaken") + RET
-				);
-		JSONArray suggestedMeals = (JSONArray) goalEval.get("meals");
-		if (suggestedMeals != null) {
+				);		
+		if (!goalEval.isNull("meals")) {
+			JSONArray suggestedMeals = (JSONArray) goalEval.get("meals");
 			System.out.println(RET + "--> Suggested meals: (calcualted from remote service)" + RET);
 			for (int i = 0; i < suggestedMeals.length(); i++) {
 				JSONObject meal = suggestedMeals.getJSONObject(i);

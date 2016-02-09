@@ -68,7 +68,7 @@
 
 * Interesting data flows
 ** User insert a meal, goal or activity
-   When the user insert from the client application a meal, a goal or an activity, the process centric service react first of all storing new data into the persitent storage and then controlling if the goal has been achieved or not sending the goal, the list of calories burned and the list of calories taken to the business logic service, which in turn calculate the results.
+   When the user insert from the client application a meal, a goal or an activity, the process centric service react first of all storing new data into the persitent storage and then controlling if the goal has been achieved or not. It sends the goal, the list of calories burned and taken to the business logic service, which in turn calculate the results and only if goals has been reached suggests a list of "safe"  meals to the user.
 ** User search for meals
    When a user search for meal from the client application, it inserts a search key. The key is passed to the storage service which in turn call the adapter service. In the adapter service data is retrieved from an external source, converted and then sent back to the client in the same way. The client can move to see other results (last call sequence is repeated with new parameters) or choose to insert the meal just retrieved from the external data source to its meals of the day, calling the first process described above.
 ** User check status of its goal
