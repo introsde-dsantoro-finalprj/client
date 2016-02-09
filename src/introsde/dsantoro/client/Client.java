@@ -24,6 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -45,11 +46,11 @@ public class Client {
 	private final String RET = "\n";
 	private final String TAB = "\t";
 	private static boolean skipNL;
-	
+
 	private static final String QUIT_MSG = "--> Quitting. Remember to eat healthy !!!";
 	private static final String BACK_MSG = "--> Going back to previous menu";
-	
-	
+
+
 	public Client(Pcws pcws) {
 		this.pcws = pcws;		
 		scanner = new Scanner(System.in);
@@ -65,9 +66,9 @@ public class Client {
 	private void dashboardMenu() {
 		int ch;
 		boolean quit = false;
-		
+
 		dashboardMenuMsg();
-		
+
 		try {
 			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 				if (ch != '\n' && ch != '\r') {                    
@@ -96,12 +97,12 @@ public class Client {
 					}
 					if (!quit) dashboardMenuMsg();
 				}
-	
+
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	
+
 	}
 
 
@@ -109,9 +110,9 @@ public class Client {
 	private void workOnPersonMenu() {
 		int ch;
 		boolean quit = false;
-		
+
 		workOnPersonMenuMsg();
-		
+
 		try {
 			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 				if (ch != '\n' && ch != '\r') {                    
@@ -139,7 +140,7 @@ public class Client {
 					}
 					if (!quit) workOnPersonMenuMsg();
 				}
-	
+
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,9 +152,9 @@ public class Client {
 	private void insertInPersonMenu() {
 		int ch;
 		boolean quit = false;
-		
+
 		insertInPersonMenuMsg();
-		
+
 		try {
 			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 				if (ch != '\n' && ch != '\r') {                    
@@ -178,13 +179,13 @@ public class Client {
 					}
 					if (!quit) insertInPersonMenuMsg();
 				}
-	
+
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	
-		
+
+
 	}
 
 
@@ -192,9 +193,9 @@ public class Client {
 	private void viewInPersonMenu() {
 		int ch;
 		boolean quit = false;
-		
+
 		viewInPersonMenuMsg();
-		
+
 		try {
 			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 				if (ch != '\n' && ch != '\r') {                    
@@ -227,12 +228,12 @@ public class Client {
 					}
 					if (!quit) viewInPersonMenuMsg();
 				}
-	
+
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
+
 	}
 
 
@@ -244,9 +245,9 @@ public class Client {
 	private void adminMenu() {
 		int ch;
 		boolean quit = false;
-		
+
 		adminMenuMsg();
-		
+
 		try {
 			while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 				if (ch != '\n' && ch != '\r') {                    
@@ -283,13 +284,13 @@ public class Client {
 					}
 					if (!quit) adminMenuMsg();
 				}
-	
+
 			}
 		} catch (IOException ex) {
 			Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 		}
-	
-		
+
+
 	}
 
 
@@ -368,7 +369,7 @@ public class Client {
 			System.out.println(TAB + "Person ID: ");
 			scanner.nextLine();
 			int newPersonId = scanner.nextInt();
-			
+
 			Person newPerson = pcws.readPerson(new Long(newPersonId));
 			if (newPerson != null) {
 				person = newPerson;
@@ -381,7 +382,7 @@ public class Client {
 		} catch (InputMismatchException e) {
 			System.err.println("--> Meal not created. Check last inserted value.");
 		}
-		
+
 	}
 
 
@@ -618,7 +619,7 @@ public class Client {
 			System.err.println("--> Person not created. Check last inserted value.");
 		}
 	}
-	
+
 	private void searchMeals() {
 		System.out.println("--> This function search and filter meals from external sources: api.foodessentials.com");
 		System.out.println("--> Please insert search criteria:");
@@ -626,7 +627,7 @@ public class Client {
 		scanner.nextLine();
 		String searchKey = scanner.nextLine();		
 		ArrayList<Meal> mealList = new ArrayList<Meal>();
-		
+
 		int s = 1;
 		int n = 10;
 		int page = 0;			
@@ -642,13 +643,13 @@ public class Client {
 				i++;
 			}
 			page++;
-		
-		
+
+
 			int ch;
 			boolean quit = false;
-			
+
 			searchMealsMenuMsg();
-			
+
 			try {
 				while ( ((ch = System.in.read()) != -1) && (quit == false) ) {
 					if (ch != '\n' && ch != '\r') {                    
@@ -687,12 +688,12 @@ public class Client {
 						}
 						if (!quit) searchMealsMenuMsg();
 					}
-		
+
 				}
 			} catch (IOException ex) {
 				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 			}
-		
+
 		}
 		else {
 			System.out.println("--> Your search key yealded no results. Try again !");
@@ -710,10 +711,10 @@ public class Client {
 			if (prettyPrint) {
 				try {
 					// Create the Document
-			        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			        DocumentBuilder db = dbf.newDocumentBuilder();
-			        Document document = db.newDocument();
-			        m.marshal( (new JAXBElement<Object>(new QName("uri","local"), Object.class, o)), document);
+					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+					DocumentBuilder db = dbf.newDocumentBuilder();
+					Document document = db.newDocument();
+					m.marshal( (new JAXBElement<Object>(new QName("uri","local"), Object.class, o)), document);
 					prettyPrintXML(document.getChildNodes(), o.getClass().getName());
 				} catch (ParserConfigurationException e) {
 					// TODO Auto-generated catch block
@@ -733,36 +734,36 @@ public class Client {
 		Node root = nodeList.item(0);
 		System.out.println(printXML(root));
 	}
-	
+
 	private static String printXML(Node rootNode) {
-	    String tab = "";
-	    skipNL = false;
-	    return(printXML(rootNode, tab));
+		String tab = "";
+		skipNL = false;
+		return(printXML(rootNode, tab));
 	}
 	private static String printXML(Node rootNode, String tab) {
-	    String print = "";
-	    if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
-	        print += "\n"+tab+""+rootNode.getNodeName().toUpperCase()+": ";
-	    }
-	    NodeList nl = rootNode.getChildNodes();
-	    if(nl.getLength()>0) {
-	        for (int i = 0; i < nl.getLength(); i++) {
-	            print += printXML(nl.item(i), tab+"  ");    // \t
-	        }
-	    } else {
-	        if(rootNode.getNodeValue()!=null) {
-	            print = rootNode.getNodeValue();
-	        }
-	        skipNL = true;
-	    }
-	    if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
-	        if(!skipNL) {
-	            print += "\n"+tab;
-	        }
-	        skipNL = false;
-	        //print += "</"+rootNode.getNodeName()+">";
-	    }
-	    return(print);
+		String print = "";
+		if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
+			print += "\n"+tab+""+rootNode.getNodeName().toUpperCase()+": ";
+		}
+		NodeList nl = rootNode.getChildNodes();
+		if(nl.getLength()>0) {
+			for (int i = 0; i < nl.getLength(); i++) {
+				print += printXML(nl.item(i), tab+"  ");    // \t
+			}
+		} else {
+			if(rootNode.getNodeValue()!=null) {
+				print = rootNode.getNodeValue();
+			}
+			skipNL = true;
+		}
+		if(rootNode.getNodeType()==Node.ELEMENT_NODE) {
+			if(!skipNL) {
+				print += "\n"+tab;
+			}
+			skipNL = false;
+			//print += "</"+rootNode.getNodeName()+">";
+		}
+		return(print);
 	}
 
 	private void dashboardMenuMsg() {
@@ -812,7 +813,7 @@ public class Client {
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
 	}
-	
+
 	private void searchMealsMenuMsg() {
 		System.out.println(
 				RET + "--> Please tell me if you want to" + RET
@@ -821,7 +822,7 @@ public class Client {
 				+ TAB + "[Q]uit: Go to previous menu" + RET
 				);		
 	}
-	
+
 	private void adminMenuMsg() {
 		System.out.println(
 				RET + "--> Please tell me if you want to" + RET
@@ -866,6 +867,17 @@ public class Client {
 				+ TAB +"Evaluation message: " + goalEval.get("evalMsg") + RET
 				+ TAB +"Goal satisfaction percentage: "+ goalEval.get("goalSatisfaction") + " %" + RET
 				+ TAB +"Calories taken: " + goalEval.get("caloriesTaken") + RET
-				);		
+				);
+		JSONArray suggestedMeals = (JSONArray) goalEval.get("meals");
+		if (suggestedMeals != null) {
+			System.out.println(RET + "--> Suggested meals: (calcualted from remote service)" + RET);
+			for (int i = 0; i < suggestedMeals.length(); i++) {
+				JSONObject meal = suggestedMeals.getJSONObject(i);
+				System.out.println(						
+						  TAB + "Meal name: " + meal.get("name") + RET
+						+ TAB + "Meal calories: " + meal.get("calories") + RET
+						);
+			}
+		}
 	}
 }
