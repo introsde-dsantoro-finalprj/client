@@ -2,14 +2,14 @@
 #+AUTHOR: Daniele Santoro
 #+DATE: 10/02/2016
 * Introduction
-  The main focus of this application (composed by 5 different services) is to demonstrate the implementation of a SOA architecture; the use-case chosen is related to person life status, indeed it try to help people to eat healthy managing meals, sport activities and goals.
+  The main focus of this application (composed by 5 different services) is to demonstrate the implementation of a SOA architecture; the use-case chosen is related to person life status: system tries to help people to eat healthy managing meals, sport activities and goals.
 
   It permits a person to add his personal information together with health information like weight, height and age. Moreover it allows the insertion of meals and activities during a day with respective amount of calories taken or burned. It has a search function to find out best meals from external provider and finally permits users to add day based target/goals in term of amount of calories taken per day.
   
-  The system stores all these information helping users to track the life style and it calculate the person health status giving suggestion based on historical user data.
+  The system stores all these information helping users to track the life style and it calculates the person health status giving suggestion based on historical user data.
 
 * Architecture
-  The below image represent the deployed architecture:
+  The below image represents the deployed architecture:
   [[file:docs/architecture.png]]\\
   /The arrows shows which is the node that initiate the communication in order to read/write information, of course the messages are exchanged in both ways./
 
@@ -65,7 +65,7 @@
 
    This service manages all the complex operations of the application, like heavy calculation or complex searches on the external data. It exposes a REST (with full HATEOAS constraint) interface and uses a SOAP based client to retrieve data from the storage service.
 
-   This service has been implemented in order to demonstrates that in a SOA architecture it is possible to have independent services, that in some cases are also highly decoupled (like in microservices architectures) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
+   This service has been implemented in order to demonstrates an important characteristic of the SOA architecture: the composition of independent services, which often are loosely coupled (a strong example is the architecture based on microservices which is derived from SOA) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
 
 * Interesting data flows
 ** User insert a meal, goal or activity
