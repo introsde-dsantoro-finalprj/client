@@ -25,14 +25,14 @@
 
    This service is responsible to grant persistent on data modifications. It exposes to north-bound services basic CRUD operations using a SOAP service. SOAP methods for each entity in the model are translated into SQL query, which are finally executed in a remote MySQL DBMS instance.
 
-   In the service has been used JPA in order to map class and ER models. Remote DB can be configured using EN_VARS, see: [[https://github.com/introsde-dsantoro-finalprj/dbws/blob/master/serviceSetup-example.sh][serviceSetup-example.sh]] script.
+   EclipseLink has been used in order to map classes with the ER model via the JPA interface. Remote DB can be configured using EN_VARS, see: [[https://github.com/introsde-dsantoro-finalprj/dbws/blob/master/serviceSetup-example.sh][serviceSetup-example.sh]] script.
 ** Adapter Service
    - Name: adpws
    - Default Port: 6904
    - Heroku app URL: pure-scrubland-58213.herokuapp.com
    - Service endpoint: /ws/adpws
    
-   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently support one external provider (api.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
+   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently support one external provider (http://developer.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
 
    It exposes a single REST API to the other services, but it include an interesting function on data transformation, please see the below section: /Interesting data flows/.
 
@@ -74,7 +74,7 @@
 ** User check status of its goal
    When user submits input to calculate his goal evaluation using the client, the process centric service pass the data to the business logic service via POST, a new resource (goalCheck) is stored on an in-memory DB and a location to the new resource is returned. The process centric service visits the newly created resource and follow the contained link (~rel=goalEval~) in order to get the goal evaluation resource.
 ** External data retrieving and adaptation
-   Once the adapter service retrieves data from the external provider (api.foodessentials.com) it makes three calls:
+   Once the adapter service retrieves data from the external provider (http://developer.foodessentials.com/api) it makes three calls:
    1) Get a session ID using configurable (ENV_VARS) token via HTTP call and gets a Json response
    2) Get the list of meals via HTTP call and gets a Json response
    3) For each list retrieves the specified calories via another HTTP call and gets a Json response
