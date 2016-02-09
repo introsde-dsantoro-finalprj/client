@@ -501,11 +501,11 @@ public class Client {
 			if (a != null) {
 				System.out.println("--> Activity created.");
 				todayGoalCheck();
+				marshallObject(a);
 			}
 			else {
 				System.out.println("--> Activity NOT created, somthing went wrong.");
-			}
-			marshallObject(a);
+			}			
 		} catch (InputMismatchException e) {
 			System.err.println("--> Activity not created. Check last inserted value.");
 		}
@@ -528,12 +528,12 @@ public class Client {
 			m = pcws.createMeal(m, person);		
 			if (m != null) {
 				System.out.println("--> Meal created.");
+				marshallObject(m);
 				todayGoalCheck();
 			}
 			else {
 				System.out.println("--> Meal NOT created, somthing went wrong.");
-			}
-			marshallObject(m);
+			}			
 		} catch (InputMismatchException e) {
 			System.err.println("--> Meal not created. Check last inserted value.");
 		}				
@@ -545,12 +545,12 @@ public class Client {
 		Meal m = pcws.createMeal(meal, person);		
 		if (m != null) {
 			System.out.println("--> Meal created.");
+			marshallObject(m);	
 			todayGoalCheck();
 		}
 		else {
 			System.out.println("--> Meal NOT created, somthing went wrong.");
 		}
-		marshallObject(m);		
 	}
 
 
@@ -568,12 +568,12 @@ public class Client {
 			g = pcws.createGoal(g, person);		
 			if (g != null) {
 				System.out.println("--> Goal created.");
+				marshallObject(g);
 				todayGoalCheck();
 			}
 			else {
 				System.out.println("--> Goal NOT created, somthing went wrong.");
-			}
-			marshallObject(g);
+			}			
 		} catch (InputMismatchException e) {
 			System.err.println("--> Goal not created. Check last inserted value.");
 		}		
@@ -609,11 +609,11 @@ public class Client {
 			person = pcws.createPerson(p);		
 			if (person != null) {
 				System.out.println("--> Person created.");
+				marshallObject(person);
 			}
 			else {
 				System.out.println("--> Person NOT created, somthing went wrong.");
-			}
-			marshallObject(person);
+			}			
 		} catch (InputMismatchException e) {
 			System.err.println("--> Person not created. Check last inserted value.");
 		}
