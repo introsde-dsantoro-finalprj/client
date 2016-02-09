@@ -16,7 +16,7 @@
   All the components a part the DB service can be deployed in order to grant a fault-tolerance/high availability architecture simply decentralizing them on the network, increasing the number of instance of each service and putting load balancers/HA proxies in front of them. 
   
 * Services Description
-  Detailed documentation for all the services is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
+  Detailed documentation about the API used by all the services is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
 ** DB Service
    - Name : dbws
    - Default Port : 6902
@@ -87,7 +87,13 @@
   The client can be deployed on any machine (with JVM) connected to the Internet, following instructions below.
 ** Client deploy and test
    1) Clone the repository
+      #+BEGIN_EXAMPLE
+      git clone https://github.com/introsde-dsantoro-finalprj/client 
+      #+END_EXAMPLE
    2) Move into =client= folder
+      #+BEGIN_EXAMPLE
+      cd client
+      #+END_EXAMPLE
    3) Deploy with:
       #+BEGIN_EXAMPLE
       ant install
@@ -103,9 +109,4 @@
       ant execute.client
       #+END_EXAMPLE
    6) Please be patient since services deployed on Heroku app could be sleeping...
-* TODO Notes
- - suggestion fabbisogno calorico giornaliaro
- - percentuale taken rispetto a burned
- - calorie ancora da bruciare rispetto ora del giorno
- - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
- - controllo se arivo da menu admin
+
