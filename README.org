@@ -11,36 +11,46 @@
   
 * Architecture
   The below image represent the deployed architecture:
-  [[file:docs/architecture.png]]
+  [[file:docs/architecture.png]]\\
   /The arrows shows which is the node that initiate the communication in order to read/write information, of course the messages are exchanged in both ways./
 * Services Description
+  Detailed documentation for all the services is present at this URL: http://docs.finalprjintrosdedsantoro.apiary.io/#
 ** DB Service
    - Name : dbws
    - Default Port : 6902
    - Heroku app URL: murmuring-spire-46621.herokuapp.com
+   - Service endpoint: /ws/dbws
+
+   This service...
+
 ** Storage Service
    - Name: storagews
    - Default Port : 6903
    - Heroku app URL: damp-fortress-22612.herokuapp.com
+   - Service endpoint: /ws/storagews
 ** Adapter Service
    - Name: adpws
    - Default Port: 6904
    - Heroku app URL: pure-scrubland-58213.herokuapp.com
+   - Service endpoint: /ws/adpws
 ** Process centric Service
    - Name: pcsw
    - Default Port: 6905
    - Heroku app URL: secret-shelf-40531.herokuapp.com
+   - Service endpoint: /ws/pcws
 ** Business Logic service
    - Name: blsw
    - Default Port: 6909
    - Heroku app URL: desolate-spire-97481.herokuapp.com
-*** Notes
-   - suggestion fabbisogno calorico
-   - percentuale taken rispetto a burned
-   - calorie ancora da bruciare rispetto ora del giorno
-   - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
-   - controllo se arivo da menu admin
-* Deployment and testing with the client
+   - Service endpoint: /ws/blws
+* Interesting data flows
+** User insert a meal, goal or activity
+** User search for meals
+** User check status of its goal
+** External data retrieving and adaptation
+   1) tre chiamate per recupero dato esterno (link to food docs)
+   2) conversione in formato per app
+* Deployment and testing using the client
   All services are already deployed on [[https://www.heroku.com][Heroku]]. See service specific repository for more detail on how to deploy it.
 
   Each service retrieves *at run-time* URLs of dependent services using configuration in =ENVIRONENT VARIABLES=. This behavior simplified the deployment on Heroku during development.
@@ -64,90 +74,12 @@
       ant execute.client
       #+END_EXAMPLE
    6) Please be patient since services deployed on Heroku app could be sleeping...
-      
-
-* Model draft
-** Objects
-*** Entities
-**** Person
-***** name
-***** surname
-***** birthday
-***** email
-***** weight
-***** height
-***** daycalories
-**** Meal
-***** datetime
-***** name
-***** calories
-***** type
-****** snack
-****** breakfast
-****** lunch
-****** dinner
-**** Activity
-***** day
-***** calories
-**** Goal
-***** name
-***** day
-***** calories
-** Methods
-** Services
-
-* Names
-  - person
-    - name
-    - surname
-    - birth date
-    - email
-    - age (calculated)
-    - calories burned regular day
-    - weight
-    - height
-  - meal
-    - day-time
-    - meal name
-    - meal calories
-    - type
-      - snack
-      - breakfast
-      - lunch
-      - dinner
-  - goal
-    - goal day 
-    - goal name
-    - goal calories
-  - activities
-    - day
-    - burned calories
-
-* Verbs
-  - on Person
-    - readPerson +
-    - insertPerson
-    - updatePerson
-    - deletePerson
-  - on Meal
-    - readMeal +
-    - insertMeal +
-    - updateMeal
-    - deleteMeal
-  - on Goal
-    - readGoal +
-    - insertGoal +
-    - updateGoal
-    - deleteGoal
-  - on Activity
-    - readActivity +
-    - insertActivity +
-    - updateActivity
-    - deleteActivity
-  - checkGoal
-  - alarm goal not respected
-  - listMeals (from external source)
-  - getMOtivationalPhrases (from external source)
+* TODO Notes
+ - suggestion fabbisogno calorico
+ - percentuale taken rispetto a burned
+ - calorie ancora da bruciare rispetto ora del giorno
+ - cibi consigliati (presi da ext rources) --> lo fa bl oppure pc
+ - controllo se arivo da menu admin
 * Questions
   1) How can I have my data model structure shared between services ? Can I just share the model package or do I have to manually/programmatically marshall and unmarshall objects between services mapping each fields ?
   2) Architecture validation
@@ -166,39 +98,4 @@
      - http://stackoverflow.com/questions/17576823/this-will-cause-infinitely-deep-xml
      - http://blog.bdoughan.com/2010/07/jpa-entities-to-xml-bidirectional.html
      - http://stackoverflow.com/questions/13957068/using-moxy-to-avoid-cycle-xmlinversereference-xmlid
-
-
-* Client operations
-  1) Menu inserimento persona
-     1) Inserisco persona
-  2) Menu operazioni su persona
-     1) Cerco nella lista meal
-        1) Inserisco meal trovato
-	   1) invoca checkTodayGoal su blws
-	   2) recupera frase motivazionale
-        2) Non inserisco meal trovato
-     2) Inserisco meal libero
-        1) invoca checkTodayGoal su blws
-	2) propongo cibi con giuste calorie in base all'orario
-     3) Inserisco attività
-        1) invoca <checkTodayGoal su blws
-	2) recupera frase motivazionale
-     4) Inserisco goal
-     5) Vedo miei meals
-     6) Vedo mie activities
-     7) Vedo miei goals
-     8) Vedo stato calorie odierne
-        1) mostra report attività odierne
-	2) invoca checkTodayGoal su blws
-	3) mostra risultato
-     9) Vedo report totale persona
-	1) invoca personReport su blws
-  3) Menu amministrativo
-     1) Vista tutte persone
-     2) Vista tutti meals inseriti
-     3) Vista tutti goal inseriti
-     4) Vista tutte activity inserite
-     5) Ricerca meals
-     6) Cambio persona
-  4) Interfaccia web via ajax con polling su pcws o blws
-	
+      
