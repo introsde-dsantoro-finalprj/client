@@ -2,13 +2,12 @@
 #+AUTHOR: Daniele Santoro
 #+DATE: 10/02/2016
 * Introduction
-  The application permits a person to add his personal information together with health information like weight, height and age (calculated from date of birth/birthdate). Moreover the person can add an indefinite number of meals and one goal per day, both with respective attributes.
-  The system should store for each meal the datetime, the amount of calories and the type of meal. The goal of the day is defined with the day and the amount of calories.
-  The person can also insert in the system the sport activities performed in a day with its amount of calories burned.
-  Either the system automatically or the person manually should insert in the person profile the amount of calories burned during a regular day, this depends on weight, height and job type.
-  Based on the sum of calories taken with meals, burned during sport activities and burned during regular day activities, the system should be able to compute if the person has reached the goal of the day or not.
-  Optionally the system can calculate the amount of calories a person can assume during a regular day based on the weight and height and activities planned.
+  The main focus of this application (composed by 5 different services) is to demonstrate the implementation of a SOA architecture; the use-case chosen is related to person life status, indeed it try to help people to eat healthy managing meals, sport activities and goals.
+
+  It permits a person to add his personal information together with health information like weight, height and age. Moreover it allows the insertion of meals and activities during a day with respective amount of calories taken or burned. It has a search function to find out best meals from external provider and finally permits users to add day based target/goals in term of amount of calories taken per day.
   
+  The system stores all these information helping users to track the life style and it calculate the person health status giving suggestion based on historical user data.
+
 * Architecture
   The below image represent the deployed architecture:
   [[file:docs/architecture.png]]\\
