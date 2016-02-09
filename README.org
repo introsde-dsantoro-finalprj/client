@@ -12,6 +12,7 @@
 * Architecture
   The below image represent the deployed architecture:
   [[file:docs/architecture.png]]
+  /The arrows shows which is the node that initiate the communication in order to read/write information, of course the messages are exchanged in both ways./
 * Services Description
 ** DB Service
    - Name : dbws
