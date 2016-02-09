@@ -74,11 +74,11 @@
    1) tre chiamate per recupero dato esterno (link to food docs)
    2) conversione in formato per app
 * Deployment and testing using the client
-  All services are already deployed on [[https://www.heroku.com][Heroku]]. See service specific repository for more detail on how to deploy it.
+  All services are already deployed on [[https://www.heroku.com][Heroku]]. See service specific repository for more details on how to deploy it.
 
-  Each service retrieves *at run-time* URLs of dependent services using configuration in =ENVIRONENT VARIABLES=. This behavior simplified the deployment on Heroku during development.
+  Each service *retrieves at run-time* URLs of dependent services (like internal services, external DB or data-providers) using configurations stored in *environment variables*. This behavior simplify the deployment on different systems, like Heroku or other PaaS providers. It helped also during the development assuring the application is portable and services can be decentralized.
 
-  The client can be deployed on a remote machine connected to the Internet following instructions below.
+  The client can be deployed on any machine (with JVM) connected to the Internet, following instructions below.
 ** Client deploy and test
    1) Clone the repository
    2) Move into =client= folder
