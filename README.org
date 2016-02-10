@@ -68,7 +68,9 @@
    This service has been implemented in order to demonstrates an important characteristic of the SOA architecture: the composition of independent services, which often are loosely coupled (a strong example is the architecture based on microservices which is derived from SOA) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
 
 ** Client
-   This is not a service but a front-end client application which permits interactions with the overall system by communicating with the process centric service. The client has multi-user user support without permission control: it permits to perform operations on a new person and on a person already present switching the context from an administrative menu (in which other administrative operations are included). In SOA architecture, this session management feature should be implemented in the process centric service but for simplicity it has been included in the client.
+   This is not a service but a front-end client application which permits interactions with the overall system by communicating with the process centric service.
+
+   The client has multi-user user support without permission control: it permits to perform operations on a new person and on a person already present switching the context from an administrative menu (in which other administrative operations are included). In SOA architecture, this session management feature should be implemented in the process centric service but for simplicity it has been included in the client.
 * Interesting data flows
 ** User insert a meal, goal or activity
    When the user insert from the client application a meal, a goal or an activity, the process centric service react first of all storing new data into the persitent storage and then controlling if the goal has been achieved or not. It sends the goal, the list of calories burned and taken to the business logic service, which in turn calculate the results and only if goals has been reached suggests a list of "safe"  meals to the user.
