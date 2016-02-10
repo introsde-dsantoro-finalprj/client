@@ -33,7 +33,7 @@
    - Heroku app URL: pure-scrubland-58213.herokuapp.com
    - Service endpoint: /ws/adpws
    
-   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those "transformed" data to the north-bound services. Currently it supports one external provider (http://developer.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
+   This service has similar functionality as the previous one since it acts as a south-bound storage service. The main difference is that its scope is to adapt external data sources to the application domain and exposes those transformed data to the north-bound services. Currently it supports one external provider (http://developer.foodessentials.com) but since it is based on an DAO pattern it can be easily extended to support more external data provider.
 
    It exposes a single REST API to the other services, but it includes an interesting function on data transformation, please see the below section: /Interesting data flows/.
 
@@ -55,7 +55,7 @@
 
    Similarly to the previous, this service is responsible to redirect all call coming from clients to the appropriate south-bound service/s. It exposes a SOAP interface to clients but also implements two clients to communicate respectively with the business logic service, via REST and with the storage service via SOAP.
 
-   This service act as orchestrator for the entire application, indeed it provides another important feature: it drives complex operations decoupling them into simple requests towards the south-bound services. See section /Interesting data flows/ for details.
+   Moreover, this service act as /orchestrator/ for the entire application since it provides another important feature: it drives complex operations decoupling them into simple requests towards the south-bound services. See section /Interesting data flows/ for details.
    
 ** Business Logic service
    - Name: blsw
@@ -67,6 +67,8 @@
 
    This service has been implemented in order to demonstrates an important characteristic of the SOA architecture: the composition of independent services, which often are loosely coupled (a strong example is the architecture based on microservices which is derived from SOA) services. In effect this service can be consumed from the process centric service but also from any other external service/user that needs to evaluate a goal based on some input data.
 
+** Client
+   This is not a service but a front-end client application which permits interactions with the overall system by communicating with the process centric service. The client has multi-user user support without permission control: it permits to perform operations on a new person and on a person already present switching the context from an administrative menu (in which other administrative operations are included). In SOA architecture, this session management feature should be implemented in the process centric service but for simplicity it has been included in the client.
 * Interesting data flows
 ** User insert a meal, goal or activity
    When the user insert from the client application a meal, a goal or an activity, the process centric service react first of all storing new data into the persitent storage and then controlling if the goal has been achieved or not. It sends the goal, the list of calories burned and taken to the business logic service, which in turn calculate the results and only if goals has been reached suggests a list of "safe"  meals to the user.
